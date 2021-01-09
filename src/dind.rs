@@ -24,14 +24,16 @@ impl Dind {
     }
 
     pub fn launch(self) -> Result<DaemonHandle, Error> {
+        let image = String::from(self.command.image());
         info!(
-            "Starting docker:dind container with name {}",
+            "Starting {} container with name {}",
+            image,
             self.command.name()
         );
         let handle = self
             .command
             .start_as_daemon(&["dockerd", "--host=tcp://0.0.0.0:2375"])?;
-        info!("docker:dind launched");
+        info!("{} launched", image);
         Ok(handle)
     }
 }

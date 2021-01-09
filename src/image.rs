@@ -141,7 +141,7 @@ pub fn pull_image(name: &str) -> Result<(), Error> {
 /// Determine whether an image exists locally
 pub fn image_exists_locally(name: &str) -> Result<bool, Error> {
     let ret = Command::new("docker")
-        .args(&["history", "docker:stable-dind"])
+        .args(&["history", name])
         .stdin(Stdio::null())
         .stdout(Stdio::null())
         .stderr(Stdio::null())
@@ -189,5 +189,41 @@ mod test {
         };
         let actual: TestImage = serde_yaml::from_str(yaml).unwrap();
         assert!(actual == expected);
+    }
+
+    /// Determine if a given program is installed in the current environment.
+    ///
+    /// Requires the program `which` to already be installed.
+    fn program_is_installed(program: &str) -> Result<bool, Error> {
+        let ret = Command::new("which")
+            .arg(program)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status()?;
+        Ok(ret.code() == Some(0))
+    }
+
+    #[test]
+    fn test_image_exists_locally() {
+        // Need to test if "docker" command is available, otherwise test will
+        // fail.
+        if !program_is_installed("docker").unwrap() {
+            panic!("docker required for this test but not installed!");
+        }
+
+        // First pull an image that is known to exist, then check that we
+        // correctly report it as existing. This also acts as a regression test
+        // against this exact image being hard-coded in the function (which it
+        // was previously!), as pulling here means that the second subtest
+        // below would then fail.
+        let existent_image = "docker:stable-dind";
+        pull_image(existent_image).unwrap();
+        assert!(image_exists_locally(existent_image).unwrap());
+
+        // Now test an image that doesn't exist, and therefore shouldn't
+        // exist locally.
+        let non_existent_image = "doesnt_exist:re4lly--sh0u1dnt-exist";
+        assert!(!image_exists_locally(non_existent_image).unwrap());
     }
 }

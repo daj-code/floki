@@ -121,6 +121,10 @@ impl DockerCommandBuilder {
         &self.name
     }
 
+    pub fn image(&self) -> &str {
+        &self.image
+    }
+
     pub fn add_volume(mut self, spec: (&path::PathBuf, &path::PathBuf)) -> Self {
         let (src, dst) = spec;
         self.volumes.push(Self::volume_mapping(src, dst));
