@@ -16,6 +16,7 @@ Status: Available for use
 ### Added
 
 ### Fixed
+- Ensure `image_exists_locally()` checks the image requested be checked, not always `docker:stable-dind`
 
 ## [0.6.2] - 2021-03-03
 
