@@ -32,7 +32,7 @@ in a shell. You should now be able to run `floki` from your working directory:
 
 ```shell
 $ ./floki --version
-floki 0.6.1
+floki 0.6.2
 ```
 
 Copy this into your path to run it without needing to specify the path absolutely. E.g.
