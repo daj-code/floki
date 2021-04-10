@@ -112,9 +112,7 @@ fn configure_docker_switches(
     Ok(cmd)
 }
 
-fn decompose_switches(
-    specs: &Vec<String>,
-) -> Result<Vec<String>, Error> {
+fn decompose_switches(specs: &[String]) -> Result<Vec<String>, Error> {
     let mut flattened = Vec::new();
 
     for spec in specs {
@@ -123,7 +121,7 @@ fn decompose_switches(
                 flattened.push(s);
             }
         } else {
-            Err(errors::FlokiError::MalformedDockerSwitch { item: spec.into() })?
+            return Err(errors::FlokiError::MalformedDockerSwitch { item: spec.into() }.into());
         }
     }
 
@@ -233,12 +231,9 @@ mod test {
     fn test_decompose_switches() -> Result<(), Error> {
         let switches = vec!["-e FOO='bar baz'".to_string()];
 
-        let want: Vec<String> = vec![
-            "-e".to_string(),
-	    "FOO=bar baz".to_string(),
-        ];
+        let want: Vec<String> = vec!["-e".to_string(), "FOO=bar baz".to_string()];
 
-	let got = decompose_switches(&switches)?;
+        let got = decompose_switches(&switches)?;
 
         assert_eq!(want, got);
 
@@ -248,7 +243,7 @@ mod test {
     #[test]
     fn test_decompose_switches_error() {
         let switches = vec!["-e FOO='bar baz".to_string()];
-	let got = decompose_switches(&switches);
-	assert!(got.is_err());
+        let got = decompose_switches(&switches);
+        assert!(got.is_err());
     }
 }

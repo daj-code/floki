@@ -208,9 +208,10 @@ mod test {
     fn test_image_exists_locally() {
         // Need to test if "docker" command is available, otherwise test will
         // fail.
-        if !program_is_installed("docker").unwrap() {
-            panic!("docker required for this test but not installed!");
-        }
+        assert!(
+            program_is_installed("docker").unwrap(),
+            "docker required for this test but not installed!"
+        );
 
         // First pull an image that is known to exist, then check that we
         // correctly report it as existing. This also acts as a regression test

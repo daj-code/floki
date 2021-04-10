@@ -3,8 +3,7 @@ mount: /home/rust/src
 forward_ssh_agent: true
 docker_switches:
   # Pass through the user's RUST_BACKTRACE setting if available.
-  - -e
-  - RUST_BACKTRACE
+  - -eRUST_BACKTRACE
 shell: bash
 # Some of the floki tests expect to be able to use docker commands. For this to
 # work, we need "dind: true" and the docker CLI tools installed in the
