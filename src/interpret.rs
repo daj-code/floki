@@ -30,6 +30,7 @@ pub(crate) fn run_container(
     cmd = configure_floki_host_mountdir_env(cmd, &environ.floki_root);
     cmd = configure_forward_user(cmd, &config, &environ);
     cmd = configure_forward_ssh_agent(cmd, &config, &environ)?;
+    cmd = configure_entrypoint(cmd, &config);
     cmd = configure_docker_switches(cmd, &config)?;
     cmd = configure_working_directory(cmd, &environ, &config);
     cmd = configure_volumes(cmd, &volumes);
@@ -98,6 +99,14 @@ fn configure_forward_ssh_agent(
         }
     } else {
         Ok(cmd)
+    }
+}
+
+fn configure_entrypoint(cmd: DockerCommandBuilder, config: &FlokiConfig) -> DockerCommandBuilder {
+    if let Some(entrypoint) = config.entrypoint.value() {
+        cmd.add_docker_switch(&format!("--entrypoint={}", entrypoint))
+    } else {
+        cmd
     }
 }
 

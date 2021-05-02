@@ -13,7 +13,11 @@ Status: Available for use
 
 ### Changed
 
+- Automatically suppress the container entrypoint - MAJOR
+
 ### Added
+
+- Allow entrypoint suppression to be set in the configuration file - MINOR
 
 ### Fixed
 - Ensure `image_exists_locally()` checks the image requested be checked, not always `docker:stable-dind`
