@@ -11,7 +11,7 @@ pub struct Dind {
 }
 
 impl Dind {
-    pub fn new(image: &str, mount: (&path::PathBuf, &path::PathBuf)) -> Self {
+    pub fn new(image: &str, mount: (&path::Path, &path::Path)) -> Self {
         Dind {
             command: DockerCommandBuilder::new(image)
                 .add_docker_switch("--privileged")

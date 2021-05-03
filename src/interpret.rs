@@ -183,9 +183,9 @@ fn get_working_directory(
 
 /// Specify the primary mount for the floki container
 fn get_mount_specification<'a, 'b>(
-    floki_root: &'a path::PathBuf,
+    floki_root: &'a path::Path,
     config: &'b FlokiConfig,
-) -> (&'a path::PathBuf, &'b path::PathBuf) {
+) -> (&'a path::Path, &'b path::Path) {
     (floki_root, &config.mount)
 }
 

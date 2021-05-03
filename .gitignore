@@ -1,2 +1,5 @@
 public
 /target/
+# Ignore any specific target directories that may be used for different build
+# types or purposes etc.
+/target-*/

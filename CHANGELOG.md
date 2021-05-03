@@ -21,6 +21,7 @@ Status: Available for use
 
 ### Fixed
 - Ensure `image_exists_locally()` checks the image requested be checked, not always `docker:stable-dind`
+- Fixed `cargo clippy` warnings and errors
 
 ## [0.6.2] - 2021-03-03
 
