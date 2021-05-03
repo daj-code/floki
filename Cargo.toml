@@ -33,3 +33,4 @@ shlex = "1.0"
 
 [dev-dependencies]
 tempdir = "0.3.7"
+which = "4.1.0"

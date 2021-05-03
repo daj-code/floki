@@ -157,7 +157,7 @@ pub fn image_exists_locally(name: &str) -> Result<bool, Error> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use serde_yaml;
+    use which::which;
 
     #[derive(Debug, PartialEq, Serialize, Deserialize)]
     struct TestImage {
@@ -192,16 +192,8 @@ mod test {
     }
 
     /// Determine if a given program is installed in the current environment.
-    ///
-    /// Requires the program `which` to already be installed.
-    fn program_is_installed(program: &str) -> Result<bool, Error> {
-        let ret = Command::new("which")
-            .arg(program)
-            .stdin(Stdio::null())
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
-            .status()?;
-        Ok(ret.code() == Some(0))
+    fn program_is_installed(program: &str) -> bool {
+        which(program).is_ok()
     }
 
     #[test]
@@ -209,7 +201,7 @@ mod test {
         // Need to test if "docker" command is available, otherwise test will
         // fail.
         assert!(
-            program_is_installed("docker").unwrap(),
+            program_is_installed("docker"),
             "docker required for this test but not installed!"
         );
 
